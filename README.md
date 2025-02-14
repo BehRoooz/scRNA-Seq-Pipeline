@@ -100,6 +100,6 @@ Feel free to fork this repository, create a new branch, and submit a pull reques
 
 For issues and feature requests, please create an issue in the GitHub repository.
 
-📜 License
+## 📜 License
 
 This project is licensed under the MIT License.
