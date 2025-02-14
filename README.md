@@ -28,79 +28,77 @@ Clustering → Identifies clusters in the data.
 
 Cell Marker Identification → Determines marker genes for clusters.
 
-## 🔧 Installation
+## Prerequisites
 
-### 1️⃣ Install Docker
+- Docker (20.10.0 or later)
+- Git
+- At least 16GB RAM recommended
+- Sufficient disk space for your dataset
 
-Ensure Docker is installed on your system:
+## 🔧 Installation Steps
 
-sudo apt-get update && sudo apt-get install -y docker.io
-
-### 2️⃣ Install Nextflow
-Install Nextflow globally:
-
-curl -s https://get.nextflow.io | bash
-mv nextflow /usr/local/bin/
-
-### 3️⃣ Clone the Repository
-
+1. Clone the repository:
+```bash
 git clone https://github.com/BehRoooz/scRNA-Seq-Pipeline.git
 cd scRNA-Seq-Pipeline
+```
 
-### 4️⃣ Build the Docker Image
-
+2. Build the Docker image:
+```bash
 docker build -t scrna-seq-pipeline .
+```
 
-## ▶️ Running the Pipeline
+## Running the Pipeline
 
-Run the pipeline using Docker:
+1. Prepare your input data:
+   - The pipeline expects 10x Genomics format data
+   - Input files should include:
+     - `matrix.mtx.gz`
+     - `features.tsv.gz`
+     - `barcodes.tsv.gz`
 
-docker run --rm -v $(pwd):/app -w /app scrna-seq-pipeline
+2. Run the pipeline:
+```bash
+docker run --rm \
+  -v $(pwd):/app \
+  -v /path/to/your/data:/app/raw_data \
+  -v /path/to/output:/app/results \
+  -w /app \
+  scrna-seq-pipeline
+```
 
-Alternatively, if you have Nextflow installed:
-
-nextflow run main.nf -with-docker scrna-seq-pipeline
-
-## ⚙️ Customizing Parameters
-
-Modify params in main.nf to adjust input/output directories:
-
-params.input = "raw_data"
-params.output = "results"
+Replace `/path/to/your/data` with the directory containing your input files and `/path/to/output` with your desired output directory.
 
 ## 📊 Output
 
-The results will be stored in the results/ directory:
-
-filtered_data.h5ad → QC-filtered data
-
-reduced_data.h5ad → PCA-reduced data
-
-clustered_data.h5ad → Clustered data
-
-cell_markers.csv → Identified cell markers
+Results will be saved in your specified output directory, including:
+- Filtered data
+- Quality control metrics
+- Dimensionality reduction plots
+- Clustering results
+- Cell type marker analysis
 
 ## 🐛 Troubleshooting
 
-Check the Nextflow Logs
+Common issues:
 
-If a process fails, inspect Nextflow logs:
+1. Insufficient memory:
+   - Increase Docker's memory allocation in Docker Desktop settings
 
-cat .nextflow.log
+2. File not found errors:
+   - Verify that your input files are in the correct format
+   - Check that volume mounting paths are correct
 
-Debug with Interactive Mode
-
-Enter the container:
-
-docker run -it --rm -v $(pwd):/app -w /app scrna-seq-pipeline /bin/bash
-
-Run Nextflow manually:
-
-nextflow run main.nf
+3. Permission issues:
+   - Ensure write permissions for output directory
 
 ## 🤝 Contributing
 
 Feel free to fork this repository, create a new branch, and submit a pull request with improvements!
+
+## Support
+
+For issues and feature requests, please create an issue in the GitHub repository.
 
 📜 License
 
